@@ -1,4 +1,6 @@
 const readline = require('readline-sync');
+const MESSAGES = require('./calculator_messages.json');
+const LANGUAGE = 'en';
 
 function prompt (message) {
   console.log(`=> ${message}`);
@@ -7,7 +9,12 @@ function prompt (message) {
 function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
-prompt('Welcome to Calculator!');
+
+function messages(message, lang = 'en') {
+  return MESSAGES[lang][message];
+}
+
+prompt(messages('welcome', LANGUAGE));
 
 let repeat;
 
