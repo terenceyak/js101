@@ -13,6 +13,23 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
+function getPlayerChoice() {
+  prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
+  prompt("Enter the short hand of your choice.");
+  prompt("r - rock, p - paper, sc - scissors, l - lizard, sp - spock");
+
+  let choice = readline.question();
+  let playerChoice = decodeChoice(choice);
+
+  while (!validateChoice(playerChoice)) {
+    prompt("That's not a valid option, please choose a valid option");
+    choice = readline.question();
+    playerChoice = decodeChoice(choice);
+  }
+
+  return playerChoice;
+}
+
 function decodeChoice(choice) {
   switch (choice.toLowerCase()) {
     case 'r' :
@@ -62,28 +79,36 @@ function displayWinner(outcome) {
   }
 }
 
-while (true) {
-  prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
-  prompt("Enter the short hand of your choice.");
-  prompt("r - rock, p - paper, sc - scissors, li - lizard, sp - spock");
-  let choice = readline.question();
-  let playerChoice = decodeChoice(choice);
+function displayResults(playerWins, computerWins) {
+  prompt(`Player - ${playerWins}, Computer - ${computerWins}`);
+}
 
-  while (!validateChoice(playerChoice)) {
-    prompt("That's not a valid option, please choose a valid option");
-    choice = readline.question();
-    playerChoice = decodeChoice(choice);
+function playGame() {
+  let playerWins = 0;
+  let computerWins = 0;
+  console.clear();
+  while (playerWins < 5 && computerWins < 5) {
+    let playerChoice = getPlayerChoice();
+    let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
+    let computerChoice = VALID_CHOICES[randomIndex];
+
+    displayChoice(playerChoice, computerChoice);
+
+    let outcome = getOutcome(playerChoice, computerChoice);
+
+    displayWinner(outcome);
+
+    if (outcome === 'win') {
+      playerWins += 1;
+    } else if (outcome === 'lose') {
+      computerWins += 1;
+    }
+
+    displayResults(playerWins, computerWins);
   }
+}
 
-  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
-  let computerChoice = VALID_CHOICES[randomIndex];
-
-  displayChoice(playerChoice, computerChoice);
-
-  let outcome = getOutcome(playerChoice, computerChoice);
-
-  displayWinner(outcome);
-
+function playAgain() {
   prompt('Do you want to play again (y/n)?');
   let answer = readline.question().toLowerCase();
   while (answer[0] !== 'n' && answer[0] !== 'y') {
@@ -91,5 +116,14 @@ while (true) {
     answer = readline.question().toLowerCase();
   }
 
-  if (answer[0] !== 'y') break;
+  if (answer[0] !== 'y') {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+while (true) {
+  playGame();
+  if (!playAgain()) break;
 }
