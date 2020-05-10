@@ -1,5 +1,5 @@
 const readline = require('readline-sync');
-const VALID_CHOICES = ['rock', 'paper', 'scissors'];
+const VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -8,13 +8,17 @@ function prompt(message) {
 function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}, computer chose ${computerChoice}`);
 
-  if ((choice === 'rock' && computerChoice === 'scissors') ||
-        (choice === 'paper' && computerChoice === 'rock') ||
-        (choice === 'scissors' && computerChoice === 'paper')) {
+  if ((choice === 'rock' && (computerChoice === 'scissors' || computerChoice === 'lizard')) ||
+        (choice === 'paper' && (computerChoice === 'rock' || computerChoice === 'spock')) ||
+        (choice === 'scissors' && (computerChoice === 'paper' || computerChoice === 'lizard')) ||
+        (choice === 'spock' && (computerChoice === 'scissors' || computerChoice === 'rock')) ||
+        (choice === 'lizard' && (computerChoice === 'paper' || computerChoice === 'spock'))) {
     prompt('You win!');
-  } else if ((choice === 'rock' && computerChoice === 'paper') ||
-               (choice === 'paper' && computerChoice === 'scissors') ||
-               (choice === 'scissors' && computerChoice === 'rock')) {
+  } else if ((choice === 'rock' && (computerChoice === 'paper' || computerChoice === 'spock')) ||
+               (choice === 'paper' && (computerChoice === 'scissors' || computerChoice === 'lizard')) ||
+               (choice === 'scissors' && (computerChoice === 'rock' || computerChoice === 'spock')) ||
+               (choice === 'spock' && (computerChoice === 'paper' || computerChoice === 'lizard')) ||
+               (choice === 'lizard' && (computerChoice === 'scissors' || computerChoice === 'rock'))) {
     prompt('Computer wins!');
   } else {
     prompt("It's a tie!");
