@@ -37,11 +37,24 @@ function initializeBoard() {
     return board;
 }
 
+function joinOr(array, delimiter = ', ', word = 'or') {
+    switch(array.length) {
+        case 0:
+            return '';
+        case 1:
+            return `${array[0]}`;
+        case 2:
+            return array.join(` ${word} `);
+        default:
+            return array.slice(0, array.length - 1).join(delimiter) + `${delimiter}${word} ${array[array.length - 1]}`;
+    } 
+}
+
 function playerChoosesSquare(board) {
     let square;
     
     while (true) {
-        prompt(`Choose a square (${emptySquares(board).join(', ')}):`);
+        prompt(`Choose a square (${joinOr(emptySquares(board), ', ', 'and')}):`);
         square = readline.question().trim();
         
         if(emptySquares(board).includes(square)) break;
