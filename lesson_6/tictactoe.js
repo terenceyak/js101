@@ -95,6 +95,22 @@ function computerChoosesSquare(board) {
     board[square] = COMPUTER_MARKER;
 }
 
+function chooseSquare(board, currentPlayer) {
+    if (currentPlayer === 'Player') {
+        playerChoosesSquare(board);
+    } else if (currentPlayer === 'Computer') {
+        computerChoosesSquare(board);
+    }
+}
+
+function alternatePlayer(currentPlayer) {
+    if (currentPlayer === 'Player') {
+        return 'Computer'
+    } else if (currentPlayer === 'Computer') {
+        return 'Player';
+    }
+}
+
 function emptySquares(board) {
     return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
 }
@@ -148,16 +164,14 @@ function start() {
     
     while(true) {
         let score = initializeScore();
+        let currentPlayer  = 'Player'; // by default player start first for first match, subsequently, will take alternate turns
         while (!detectMatchWinner(score).length) {
             while (true) {
                 let board = initializeBoard();
                 while (true) {
                     displayBoard(board, score);
-                    playerChoosesSquare(board);
-                    if (someoneWon(board) || boardFull(board)) break;
-            
-                    computerChoosesSquare(board);
-            
+                    chooseSquare(board, currentPlayer);
+                    currentPlayer = alternatePlayer(currentPlayer);
                     if (someoneWon(board) || boardFull(board)) break;
                 }
         
